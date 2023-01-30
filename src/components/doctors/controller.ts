@@ -15,14 +15,25 @@ export const modify_datos = async (req: Request, res: Response): Promise<Respons
       return success({ res, data: data_medico });
 
     } catch (error) {
-        return failure({ res, message: error });
+      return failure({ res, message: error });
     }
   };
 
-
+  
 export const registro_horario = async (req: Request, res: Response) => {
+
+    try {
+        const { day, time } = req.body;
+
+        const schedule = await prisma.Schedule({
+            day: day,
+            time: time,
+            createdAt: new Date()
+            })
+
+        return success({ res, data: schedule });
+
+    } catch (error) {
+        return failure({ res, message: error });
+        }
     };
-
-
-
-
