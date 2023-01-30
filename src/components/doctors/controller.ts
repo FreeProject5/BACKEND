@@ -18,3 +18,11 @@ export const modify_datos = async (req: Request, res: Response): Promise<Respons
         return failure({ res, message: error });
     }
   };
+
+
+export const registro_horario = async (req: Request, res: Response) => {
+    };
+
+
+
+
