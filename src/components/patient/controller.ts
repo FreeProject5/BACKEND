@@ -3,15 +3,6 @@ import prisma from "../../datasource";
 import { success, failure } from "../../responses";
 import { hash_password, compare_password } from "../../utils/strings";
 
-export const get_ser =async (_req:Request, res: Response):Promise<Response> => {
-    try {
-        const user = await prisma.user.findMany()
-    return success({res, data: user})
-    } catch (error) {
-        return failure({res, message:error})
-    }
-}
-
 export const create_user =async (req:Request, res: Response) => {
     try {
         const { body } = req;
@@ -22,6 +13,15 @@ export const create_user =async (req:Request, res: Response) => {
         return success({res, status: 201, data: user})
     } catch (error) {
         return failure({res, message: error})
+    }
+}
+
+export const get_ser =async (_req:Request, res: Response):Promise<Response> => {
+    try {
+        const user = await prisma.user.findMany()
+    return success({res, data: user})
+    } catch (error) {
+        return failure({res, message:error})
     }
 }
 
