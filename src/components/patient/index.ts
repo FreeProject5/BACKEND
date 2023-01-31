@@ -1,12 +1,12 @@
 import { Router } from "express";
 import * as Controller from "./controller";
 
-const user_router = Router();
+const patient_router = Router();
 
-user_router.post("/", Controller.create_user);
-user_router.post("/login", Controller.login_user);
-user_router.get("/", Controller.get_ser);
-user_router.put("/:id", Controller.update_user);
-user_router.delete("/:id", Controller.delete_user);
+patient_router.post("/", Controller.create_patient);
+patient_router.post("/login", Controller.login_patient);
+patient_router.get("/", Controller.get_patient);
+patient_router.put("/:id", Controller.update_patient);
+patient_router.delete("/:id", Controller.delete_patient);
 
-export default user_router;
+export default patient_router;
