@@ -146,3 +146,4 @@ dist
 # base de datos
 dev.db-journal
 dev.db
+migrations
