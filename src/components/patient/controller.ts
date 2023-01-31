@@ -66,4 +66,18 @@ export const delete_user = async (
   }
 };
 
-
+export const login_user = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { email, password } = req.body;
+    const user = await prisma.user.findFirst({ where: email });
+    if (!compare_password(user?.password as string, password)) {
+      return failure({ res, message: "Email or password incorrect" });
+    }
+    return success({ res, message: "Welcome!", data: user });
+  } catch (error) {
+      return failure({res, message: error})
+  }
+};
