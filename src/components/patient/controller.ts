@@ -3,7 +3,7 @@ import prisma from "../../datasource";
 import { success, failure } from "../../responses";
 import { hash_password, compare_password } from "../../utils/strings";
 
-export const create_user = async (
+export const create_patient = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
@@ -24,7 +24,7 @@ export const create_user = async (
   }
 };
 
-export const get_ser = async (
+export const get_patient = async (
   _req: Request,
   res: Response
 ): Promise<Response> => {
@@ -36,7 +36,7 @@ export const get_ser = async (
   }
 };
 
-export const update_user = async (
+export const update_patient = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
@@ -53,7 +53,7 @@ export const update_user = async (
   }
 };
 
-export const delete_user = async (
+export const delete_patient = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
@@ -66,7 +66,7 @@ export const delete_user = async (
   }
 };
 
-export const login_user = async (
+export const login_patient = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
