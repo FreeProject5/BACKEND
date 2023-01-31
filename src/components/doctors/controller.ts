@@ -52,3 +52,20 @@ export const create_doctor = async (req: Request, res: Response): Promise<Respon
     return failure({ res, message: error });
     }
 };
+
+
+export const deletee = async (req: Request, res: Response): Promise<Response>  => {
+  try {
+    const id: number = parseInt(req.params.id);
+
+    const doctor = await prisma.song.delete({
+      where: {
+        id,
+      },
+    });
+
+    return success({ res, data: doctor });
+  } catch (error) {
+    return failure({ res, message: error });
+    }
+};
