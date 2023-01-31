@@ -7,9 +7,10 @@ interface IResponse {
   message?: any;
 }
 
-export function success({ res, status = 200, data }: IResponse): Response {
+export function success({ res, status = 200, message, data }: IResponse): Response {
   return res.status(status).json({
-    ok: true,
+      ok: true,
+      message,
     data,
   });
 }

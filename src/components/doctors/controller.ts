@@ -20,12 +20,12 @@ export const modify_datos = async (req: Request, res: Response): Promise<Respons
   };
 
   
-export const registro_horario = async (req: Request, res: Response) => {
+export const Registration_horario = async (req: Request, res: Response): Promise<Response> => {
 
     try {
         const { day, time } = req.body;
 
-        const schedule = await prisma.Schedule({
+        const schedule = await prisma.Schedule.create({
             day: day,
             time: time,
             createdAt: new Date()
@@ -37,3 +37,18 @@ export const registro_horario = async (req: Request, res: Response) => {
         return failure({ res, message: error });
         }
     };
+  
+
+export const create_doctor = async (req: Request, res: Response): Promise<Response>  => {
+  try {
+    const data = req.body;
+
+    const medico= await prisma.medico.create({
+      data: data,
+    });
+
+    return success({ res, data: medico });
+  } catch (error) {
+    return failure({ res, message: error });
+    }
+};
