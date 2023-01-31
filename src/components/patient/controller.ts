@@ -15,7 +15,7 @@ export const create_patient = async (
       return failure({ res, message: "Username and password are required." });
     }
     body.password = hash_password(body.password);
-    const user = await prisma.user.create({ data: body });
+    const user = await prisma.patient.create({ data: body });
     return success({
       res,
       status: 201,
