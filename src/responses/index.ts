@@ -21,4 +21,3 @@ export function failure({ res, status = 500, message }: IResponse): Response {
     message,
   });
 }
-
