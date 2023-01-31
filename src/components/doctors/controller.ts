@@ -2,6 +2,19 @@ import type { Request, Response } from "express";
 import prisma from "../../datasource";
 import { success, failure } from "../../responses";
 
+export const findAll = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    let Doctors = await prisma.song.findMany();
+
+    return success({ res, data: Doctors });
+
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+
+
+
 export const modify_datos = async (req: Request, res: Response): Promise<Response>  => {
     try {
       const id: number = Number(req.params.id);
@@ -69,3 +82,4 @@ export const deletee = async (req: Request, res: Response): Promise<Response>  =
     return failure({ res, message: error });
     }
 };
+
