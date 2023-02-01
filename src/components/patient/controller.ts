@@ -37,7 +37,8 @@ export const get_patient = async (
     const user = await prisma.patient.findMany({
       select: {
         id: true,
-        name: true,
+        firstname: true,
+        lastname: true,
         email: true,
         password: true,
       },
@@ -64,7 +65,7 @@ export const update_patient = async (
     });
     return success({ res, message: "User updated successfully", data: user });
   } catch (error) {
-      console.log(error)
+    console.log(error);
     return failure({ res, message: error });
   }
 };
@@ -92,7 +93,8 @@ export const login_patient = async (
       where: { email },
       select: {
         id: true,
-        name: true,
+        firstname: true,
+        lastname: true,
         email: true,
         password: true,
       },
