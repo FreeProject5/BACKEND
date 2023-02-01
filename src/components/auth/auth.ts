@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
-import { success, failure } from "../../responses";
+import { failure } from "../../responses";
 
 dotenv.config();
 
