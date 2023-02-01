@@ -2,7 +2,7 @@ import { Request, response, Response } from "express";
 import prisma from "../../datasource";
 import { success, failure } from "../../responses";
 import { hash_password, compare_password } from "../../utils/strings";
-import { generate_token } from "../auth/auth";
+import { generate_token, verify_token } from "../auth/auth";
 import { User } from "../interfaces";
 
 export const create_patient = async (
