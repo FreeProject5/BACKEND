@@ -2,6 +2,8 @@ import { Request, response, Response } from "express";
 import prisma from "../../datasource";
 import { success, failure } from "../../responses";
 import { hash_password, compare_password } from "../../utils/strings";
+import { generate_token, verify_token } from "../auth/auth";
+import { User } from "../interfaces";
 
 export const create_patient = async (
   req: Request,
@@ -23,7 +25,6 @@ export const create_patient = async (
       data: user,
     });
   } catch (error) {
-    console.log(error);
     return failure({ res, message: error });
   }
 };
@@ -53,13 +54,17 @@ export const update_patient = async (
 ): Promise<Response> => {
   try {
     const id = Number(req.params.id);
-    const { data } = req.body;
-    const user = await prisma.user.update({
+    const { body } = req;
+    if (body.password) {
+      body.password = hash_password(body.password);
+    }
+    const user = await prisma.patient.update({
       where: { id },
-      data,
+      data: body,
     });
     return success({ res, message: "User updated successfully", data: user });
   } catch (error) {
+      console.log(error)
     return failure({ res, message: error });
   }
 };
@@ -83,7 +88,7 @@ export const login_patient = async (
 ): Promise<Response> => {
   try {
     const { email, password } = req.body;
-    const user = await prisma.user.findUnique({
+    const user: User | null = await prisma.patient.findUnique({
       where: { email },
       select: {
         id: true,
@@ -94,8 +99,20 @@ export const login_patient = async (
     });
     if (!compare_password(user?.password as string, password)) {
       return failure({ res, message: "Data does not exist or is incorrect" });
+    } else {
+      const datetime = new Date().toISOString();
+      const last_session = await prisma.patient.update({
+        where: { email },
+        data: { last_session: datetime },
+      });
+      const token: string = generate_token(Number(user?.id));
+      return success({
+        res,
+        message: `Welcome!`,
+        data: user,
+        token,
+      });
     }
-    return success({ res, message: "Welcome!", data: user });
   } catch (error) {
     console.log(error);
     return failure({ res, message: error });
