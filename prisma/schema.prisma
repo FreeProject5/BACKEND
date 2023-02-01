@@ -11,35 +11,58 @@ datasource db {
 }
 
 model Patient {
-  id           Int       @id @default(autoincrement())
-  name         String
-  email        String    @unique
-  password     String
-  last_session DateTime?
-  date_born    DateTime?
-  update_at    DateTime  @default(now()) @updatedAt
-  create_at    DateTime  @default(now())
-  checkup      checkup[]
+  id              Int         @id @default(autoincrement())
+  name            String
+  email           String      @unique
+  password        String
+  last_session    DateTime?
+  date_born       DateTime?
+  update_at       DateTime    @default(now()) @updatedAt
+  create_at       DateTime    @default(now())
 
   @@map("patients")
 }
 
 model Doctor {
-  id             Int       @id @default(autoincrement())
-  name           String
-  email          String    @unique
-  password       String
-  nrocolegiatura Int       @unique
-  last_session   DateTime?
-  date_born      DateTime?
-  update_at      DateTime  @default(now()) @updatedAt
-  create_at      DateTime  @default(now())
+  id              Int        @id @default(autoincrement())
+  name            String
+  email           String     @unique
+  password        String
+  nrocolegiatura  Int        @unique
+
+  especialidad    DoctorSpecialty[]
+
+  last_session    DateTime?
+  date_born       DateTime?
+  update_at       DateTime   @default(now()) @updatedAt
+  create_at       DateTime   @default(now())
+
+  @@map("doctor")
 }
 
-model checkup {
-  id          Int      @id @default(autoincrement())
-  patient     Patient  @relation(fields: [idpatient], references: [id])
-  idpatient   Int
-  state       String
-  dateandhour DateTime
+model Specialty {
+  id              Int        @id @default(autoincrement())
+  name            String
+
+  doctor          DoctorSpecialty[]
+
+  update_at       DateTime   @default(now()) @updatedAt
+  create_at       DateTime   @default(now())
+
+
+  @@map("specialty")
 }
+
+model DoctorSpecialty {
+  id               Int       @id @default(autoincrement())
+  doctor           Doctor    @relation(fields: [doctor_id], references: [id])
+  doctor_id        Int
+  especialidad     Specialty @relation(fields: [especialidad_id], references: [id])
+  especialidad_id  Int
+
+  @@map("doctorspecialty")
+}
+
+
+
+
