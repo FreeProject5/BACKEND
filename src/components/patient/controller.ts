@@ -17,7 +17,7 @@ export const create_patient = async (
       return failure({ res, message: "Username and password are required." });
     }
     body.password = hash_password(body.password);
-    const user = await prisma.user.create({ data: body });
+    const user = await prisma.patient.create({ data: body });
     return success({
       res,
       status: 201,
@@ -34,7 +34,7 @@ export const get_patient = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const user = await prisma.user.findMany({
+    const user = await prisma.patient.findMany({
       select: {
         id: true,
         name: true,
@@ -75,7 +75,7 @@ export const delete_patient = async (
 ): Promise<Response> => {
   try {
     const id = Number(req.params.id);
-    const user = await prisma.user.delete({ where: { id } });
+    const user = await prisma.patient.delete({ where: { id } });
     return success({ res, message: "User deleted succesfully" });
   } catch (error) {
     return failure({ res, message: error });

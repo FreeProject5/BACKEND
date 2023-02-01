@@ -10,15 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           Int        @id @default(autoincrement())
+model Patient {
+  id           Int       @id @default(autoincrement())
   name         String
-  email        String     @unique
+  email        String    @unique
   password     String
   last_session DateTime?
   date_born    DateTime?
-  update_at    DateTime   @default(now()) @updatedAt
-  create_at    DateTime   @default(now())
+  update_at    DateTime  @default(now()) @updatedAt
+  create_at    DateTime  @default(now())
+  checkup      checkup[]
 
-  @@map("users")
+  @@map("patients")
+}
+
+model Doctor {
+  id             Int       @id @default(autoincrement())
+  name           String
+  email          String    @unique
+  password       String
+  nrocolegiatura Int       @unique
+  last_session   DateTime?
+  date_born      DateTime?
+  update_at      DateTime  @default(now()) @updatedAt
+  create_at      DateTime  @default(now())
+}
+
+model checkup {
+  id          Int      @id @default(autoincrement())
+  patient     Patient  @relation(fields: [idpatient], references: [id])
+  idpatient   Int
+  state       String
+  dateandhour DateTime
 }
