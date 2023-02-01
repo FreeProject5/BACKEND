@@ -4,7 +4,7 @@ import { success, failure } from "../../responses";
 
 export const findAll = async (req: Request, res: Response): Promise<Response> => {
   try {
-    let Doctors = await prisma.song.findMany();
+    let Doctors = await prisma.doctor.findMany({include: {schedule: true}} );
 
     return success({ res, data: Doctors });
 
@@ -20,7 +20,7 @@ export const modify_datos = async (req: Request, res: Response): Promise<Respons
       const id: number = Number(req.params.id);
       const data = req.body;
 
-      const data_medico=await prisma.medico.update({
+      const data_medico=await prisma.doctor.update({
         where: { id },
         data: data,
       });
@@ -36,12 +36,10 @@ export const modify_datos = async (req: Request, res: Response): Promise<Respons
 export const Registration_horario = async (req: Request, res: Response): Promise<Response> => {
 
     try {
-        const { day, time } = req.body;
+        const data = req.body;
 
-        const schedule = await prisma.Schedule.create({
-            day: day,
-            time: time,
-            createdAt: new Date()
+        const schedule = await prisma.schedule.create({
+          data
             })
 
         return success({ res, data: schedule });
@@ -56,7 +54,7 @@ export const create_doctor = async (req: Request, res: Response): Promise<Respon
   try {
     const data = req.body;
 
-    const medico= await prisma.medico.create({
+    const medico= await prisma.doctor.create({
       data: data,
     });
 
@@ -71,7 +69,7 @@ export const deletee = async (req: Request, res: Response): Promise<Response>  =
   try {
     const id: number = parseInt(req.params.id);
 
-    const doctor = await prisma.song.delete({
+    const doctor = await prisma.doctor.delete({
       where: {
         id,
       },
@@ -83,3 +81,14 @@ export const deletee = async (req: Request, res: Response): Promise<Response>  =
     }
 };
 
+
+export const findAll_schedule = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    let Doctors = await prisma.schedule.findMany();
+
+    return success({ res, data: Doctors });
+
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
