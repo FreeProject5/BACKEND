@@ -5,13 +5,21 @@ interface IResponse {
   status?: number;
   data?: any;
   message?: any;
+  token?: string;
 }
 
-export function success({ res, status = 200, message, data }: IResponse): Response {
+export function success({
+  res,
+  status = 200,
+  message,
+  data,
+  token,
+}: IResponse): Response {
   return res.status(status).json({
-      ok: true,
-      message,
+    ok: true,
+    message,
     data,
+    token,
   });
 }
 
