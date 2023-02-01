@@ -41,7 +41,7 @@ model Doctor {
   update_at       DateTime   @default(now()) @updatedAt
   create_at       DateTime   @default(now())
 
-  @@map("doctor")
+  @@map("doctors")
 }
 
 model Specialty {
@@ -54,7 +54,7 @@ model Specialty {
   create_at       DateTime   @default(now())
 
 
-  @@map("specialty")
+  @@map("specialties")
 }
 
 model DoctorSpecialty {
@@ -64,7 +64,7 @@ model DoctorSpecialty {
   specialty        Specialty @relation(fields: [specialty_id], references: [id])
   specialty_id     Int
 
-  @@map("doctorspecialty")
+  @@map("doctorspecialties")
 }
 
 model Schedule {
@@ -78,13 +78,14 @@ model Schedule {
 
   create_at        DateTime  @default(now())
 
-  @@map("schedule")
+  @@map("schedules")
 }
 
 model Checkup {
   id               Int       @id @default(autoincrement())
   patient          Patient   @relation(fields: [patient_id], references: [id])
   patient_id       Int
+  checkup_time     DateTime
   schedule         Schedule  @relation(fields: [schedule_id], references: [id])
   schedule_id      Int
   status           String    @default("PENDING")
