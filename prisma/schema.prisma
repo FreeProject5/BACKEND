@@ -15,6 +15,9 @@ model Patient {
   name            String
   email           String      @unique
   password        String
+
+  checkup         Checkup[]
+
   last_session    DateTime?
   date_born       DateTime?
   update_at       DateTime    @default(now()) @updatedAt
@@ -28,9 +31,10 @@ model Doctor {
   name            String
   email           String     @unique
   password        String
-  nrocolegiatura  Int        @unique
+  license         Int        @unique
 
-  especialidad    DoctorSpecialty[]
+  specialty       DoctorSpecialty[]
+  schedule        Schedule[]
 
   last_session    DateTime?
   date_born       DateTime?
@@ -57,11 +61,37 @@ model DoctorSpecialty {
   id               Int       @id @default(autoincrement())
   doctor           Doctor    @relation(fields: [doctor_id], references: [id])
   doctor_id        Int
-  especialidad     Specialty @relation(fields: [especialidad_id], references: [id])
-  especialidad_id  Int
+  specialty        Specialty @relation(fields: [specialty_id], references: [id])
+  specialty_id     Int
 
   @@map("doctorspecialty")
 }
+
+model Schedule {
+  id               Int       @id @default(autoincrement())
+  start_time       DateTime
+  end_time         DateTime
+
+  doctor           Doctor    @relation(fields: [doctor_id], references: [id])
+  doctor_id        Int
+  checkup          Checkup[]
+
+  create_at        DateTime  @default(now())
+
+  @@map("schedule")
+}
+
+model Checkup {
+  id               Int       @id @default(autoincrement())
+  patient          Patient   @relation(fields: [patient_id], references: [id])
+  patient_id       Int
+  schedule         Schedule  @relation(fields: [schedule_id], references: [id])
+  schedule_id      Int
+  status           String    @default("PENDING")
+
+  @@map("checkups")
+}
+
 
 
 
