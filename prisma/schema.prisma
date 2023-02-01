@@ -11,35 +11,89 @@ datasource db {
 }
 
 model Patient {
-  id           Int       @id @default(autoincrement())
-  name         String
-  email        String    @unique
-  password     String
-  last_session DateTime?
-  date_born    DateTime?
-  update_at    DateTime  @default(now()) @updatedAt
-  create_at    DateTime  @default(now())
-  checkup      checkup[]
+  id              Int         @id @default(autoincrement())
+  name            String
+  email           String      @unique
+  password        String
+
+  checkup         Checkup[]
+
+  last_session    DateTime?
+  date_born       DateTime?
+  update_at       DateTime    @default(now()) @updatedAt
+  create_at       DateTime    @default(now())
 
   @@map("patients")
 }
 
 model Doctor {
-  id             Int       @id @default(autoincrement())
-  name           String
-  email          String    @unique
-  password       String
-  nrocolegiatura Int       @unique
-  last_session   DateTime?
-  date_born      DateTime?
-  update_at      DateTime  @default(now()) @updatedAt
-  create_at      DateTime  @default(now())
+  id              Int        @id @default(autoincrement())
+  name            String
+  email           String     @unique
+  password        String
+  license         Int        @unique
+
+  specialty       DoctorSpecialty[]
+  schedule        Schedule[]
+
+  last_session    DateTime?
+  date_born       DateTime?
+  update_at       DateTime   @default(now()) @updatedAt
+  create_at       DateTime   @default(now())
+
+  @@map("doctors")
 }
 
-model checkup {
-  id          Int      @id @default(autoincrement())
-  patient     Patient  @relation(fields: [idpatient], references: [id])
-  idpatient   Int
-  state       String
-  dateandhour DateTime
+model Specialty {
+  id              Int        @id @default(autoincrement())
+  name            String
+
+  doctor          DoctorSpecialty[]
+
+  update_at       DateTime   @default(now()) @updatedAt
+  create_at       DateTime   @default(now())
+
+
+  @@map("specialties")
 }
+
+model DoctorSpecialty {
+  id               Int       @id @default(autoincrement())
+  doctor           Doctor    @relation(fields: [doctor_id], references: [id])
+  doctor_id        Int
+  specialty        Specialty @relation(fields: [specialty_id], references: [id])
+  specialty_id     Int
+
+  @@map("doctorspecialties")
+}
+
+model Schedule {
+  id               Int       @id @default(autoincrement())
+  start_time       DateTime
+  end_time         DateTime
+
+  doctor           Doctor    @relation(fields: [doctor_id], references: [id])
+  doctor_id        Int
+  checkup          Checkup[]
+
+  create_at        DateTime  @default(now())
+
+  @@map("schedules")
+}
+
+model Checkup {
+  id               Int       @id @default(autoincrement())
+  patient          Patient   @relation(fields: [patient_id], references: [id])
+  patient_id       Int
+  checkup_time     DateTime
+  schedule         Schedule  @relation(fields: [schedule_id], references: [id])
+  schedule_id      Int
+  status           String    @default("PENDING")
+
+  @@map("checkups")
+}
+
+
+
+
+
