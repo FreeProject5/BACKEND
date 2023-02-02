@@ -2,98 +2,93 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
 }
 
 model Patient {
-  id              Int         @id @default(autoincrement())
-  name            String
-  email           String      @unique
-  password        String
+    id        Int    @id @default(autoincrement())
+    firstname String
+    lastname  String
+    email     String @unique
+    password  String
 
-  checkup         Checkup[]
+    checkup Checkup[]
 
-  last_session    DateTime?
-  date_born       DateTime?
-  update_at       DateTime    @default(now()) @updatedAt
-  create_at       DateTime    @default(now())
+    last_session DateTime?
+    date_born    DateTime?
+    update_at    DateTime  @default(now()) @updatedAt
+    create_at    DateTime  @default(now())
 
-  @@map("patients")
+    @@map("patients")
 }
 
 model Doctor {
-  id              Int        @id @default(autoincrement())
-  name            String
-  email           String     @unique
-  password        String
-  license         Int        @unique
+    id       Int    @id @default(autoincrement())
+    name     String
+    email    String @unique
+    password String
+    license  Int    @unique
 
-  specialty       DoctorSpecialty[]
-  schedule        Schedule[]
+    specialty DoctorSpecialty[]
+    schedule  Schedule[]
 
-  last_session    DateTime?
-  date_born       DateTime?
-  update_at       DateTime   @default(now()) @updatedAt
-  create_at       DateTime   @default(now())
+    last_session DateTime?
+    date_born    DateTime?
+    update_at    DateTime  @default(now()) @updatedAt
+    create_at    DateTime  @default(now())
 
-  @@map("doctors")
+    @@map("doctors")
 }
 
 model Specialty {
-  id              Int        @id @default(autoincrement())
-  name            String
+    id   Int    @id @default(autoincrement())
+    name String
 
-  doctor          DoctorSpecialty[]
+    doctor DoctorSpecialty[]
 
-  update_at       DateTime   @default(now()) @updatedAt
-  create_at       DateTime   @default(now())
+    update_at DateTime @default(now()) @updatedAt
+    create_at DateTime @default(now())
 
-
-  @@map("specialties")
+    @@map("specialties")
 }
 
 model DoctorSpecialty {
-  id               Int       @id @default(autoincrement())
-  doctor           Doctor    @relation(fields: [doctor_id], references: [id])
-  doctor_id        Int
-  specialty        Specialty @relation(fields: [specialty_id], references: [id])
-  specialty_id     Int
+    id           Int       @id @default(autoincrement())
+    doctor       Doctor    @relation(fields: [doctor_id], references: [id])
+    doctor_id    Int
+    specialty    Specialty @relation(fields: [specialty_id], references: [id])
+    specialty_id Int
 
-  @@map("doctorspecialties")
+    @@map("doctorspecialties")
 }
 
 model Schedule {
-  id               Int       @id @default(autoincrement())
-  start_time       DateTime
-  end_time         DateTime
+    id         Int      @id @default(autoincrement())
+    start_time DateTime
+    end_time   DateTime
 
-  doctor           Doctor    @relation(fields: [doctor_id], references: [id])
-  doctor_id        Int
-  checkup          Checkup[]
+    doctor    Doctor    @relation(fields: [doctor_id], references: [id])
+    doctor_id Int
+    checkup   Checkup[]
 
-  create_at        DateTime  @default(now())
+    create_at DateTime @default(now())
 
-  @@map("schedules")
+    @@map("schedules")
 }
 
 model Checkup {
-  id               Int       @id @default(autoincrement())
-  patient          Patient   @relation(fields: [patient_id], references: [id])
-  patient_id       Int
-  checkup_time     DateTime
-  schedule         Schedule  @relation(fields: [schedule_id], references: [id])
-  schedule_id      Int
-  status           String    @default("PENDING")
+    id           Int      @id @default(autoincrement())
+    patient      Patient  @relation(fields: [patient_id], references: [id])
+    patient_id   Int
+    checkup_time DateTime
+    schedule     Schedule @relation(fields: [schedule_id], references: [id])
+    schedule_id  Int
+    status       String   @default("PENDING")
 
-  @@map("checkups")
+    @@map("checkups")
 }
-
-
-
-
-
