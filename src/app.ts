@@ -11,4 +11,4 @@ routes(app);
 
 //app.get("/", (req, res) => res.send("hola mundo"))
 
-export default app;
+export default app
