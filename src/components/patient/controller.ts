@@ -25,12 +25,13 @@ export const create_patient = async (
       data: user,
     });
   } catch (error) {
+    console.log(error);
     return failure({ res, message: error });
   }
 };
 
-export const get_patient = async (
-  _req: Request,
+export const get_all_patient = async (
+  req: Request,
   res: Response
 ): Promise<Response> => {
   try {
@@ -45,6 +46,32 @@ export const get_patient = async (
     });
     return success({ res, data: user });
   } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+export const get_one_patient = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const id = Number(req.params.id);
+    const user = await prisma.patient.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        firstname: true,
+        lastname: true,
+        email: true,
+        password: true,
+      },
+    });
+    if (id === user?.id) {
+      return success({ res, message: "User found", data: user });
+    }
+    return failure({ res, message: "Unauthorized" });
+  } catch (error) {
+    console.log(error);
+
     return failure({ res, message: error });
   }
 };
@@ -65,7 +92,6 @@ export const update_patient = async (
     });
     return success({ res, message: "User updated successfully", data: user });
   } catch (error) {
-    console.log(error);
     return failure({ res, message: error });
   }
 };
@@ -116,7 +142,6 @@ export const login_patient = async (
       });
     }
   } catch (error) {
-    console.log(error);
     return failure({ res, message: error });
   }
 };
