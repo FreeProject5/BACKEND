@@ -20,7 +20,6 @@ export const create_patient = async (
     const user = await prisma.patient.create({ data: body });
     return success({
       res,
-      status: 201,
       message: "User create successfully",
       data: user,
     });
