@@ -29,7 +29,8 @@ model Patient {
 
 model Doctor {
     id       Int    @id @default(autoincrement())
-    name     String
+    firstname String
+    lastname  String
     email    String @unique
     password String
     license  Int    @unique
