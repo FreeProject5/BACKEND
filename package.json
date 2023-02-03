@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "publisher": "true",
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
