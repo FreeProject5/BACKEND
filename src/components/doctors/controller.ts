@@ -5,7 +5,7 @@ import {supabase} from "../../services/supabase";
 
 export const findAll = async (req: Request, res: Response): Promise<Response> => {
   try {
-
+    //let Doctors = await prisma.doctor.findMany({include: {schedule: true}} );
     const Doctors = await supabase.from("Doctor").select("*");
     return success({ res, data: Doctors });
 
@@ -21,35 +21,41 @@ export const modify_datos = async (req: Request, res: Response): Promise<Respons
       const id: number = Number(req.params.id);
       const data = req.body;
 
-      const data_medico=await prisma.doctor.update({
-        where: { id },
-        data: data,
-      });
-  
-      return success({ res, data: data_medico });
+      // const data_medico=await prisma.doctor.update({
+      //   where: { id },
+      //   data: data,
+      // });
+
+      const data_doctor = await supabase
+      .from('Doctor')
+      .update({ ...data })
+      .eq('id', id)
+      .select()
+
+      return success({ res, data: data_doctor });
 
     } catch (error) {
       return failure({ res, message: error });
     }
   };
 
-  
+
 export const Registration_horario = async (req: Request, res: Response): Promise<Response> => {
 
-    try {
-        const data = req.body;
+  try {
+    const data = req.body;
 
-        const schedule = await prisma.schedule.create({
-          data
-            })
+    const schedule = await prisma.schedule.create({
+      data
+        })
 
-        return success({ res, data: schedule });
+    return success({ res, data: schedule });
 
-    } catch (error) {
-        return failure({ res, message: error });
-        }
-    };
-  
+  }catch(error) {
+      return failure({ res, message: error });
+      }
+  };
+
 
 export const create_doctor = async (req: Request, res: Response): Promise<Response>  => {
   try {
