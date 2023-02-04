@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "publisher": "true",
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
@@ -37,6 +38,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "prisma": "^4.9.0"
+    "prisma": "^4.9.0",
+    "supabase": "^1.36.5"
   }
 }
