@@ -14,7 +14,21 @@ export const findAll = async (req: Request, res: Response): Promise<Response> =>
   }
 };
 
+export const findOne_doctor = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
 
+    const id: number = parseInt(req.params.id);
+    const doctor = await supabase.from("Doctor").select("*").eq('id', id);
+
+    return success({ res, message: "Doctor found", data: doctor });
+
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
 
 export const modify_datos = async (req: Request, res: Response): Promise<Response>  => {
     try {
