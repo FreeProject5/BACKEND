@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
-    "start": "node index"
+    "start": "node dist/index.js"
   },
   "repository": {
     "type": "git",
