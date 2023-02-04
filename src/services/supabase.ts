@@ -12,7 +12,7 @@ const supabase = createClient(
 
 export const get_patient = async (_req: Request, res: Response) => {
   const posts = await supabase.from("Patient").select("*");
-  return success({ res, message: "Patient created successfully", data: posts });
+  return success({ res, message: "All patient", data: posts });
 };
 
 export const post_patient = async (req: Request, res: Response) => {
