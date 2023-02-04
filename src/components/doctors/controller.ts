@@ -80,11 +80,16 @@ export const deletee = async (req: Request, res: Response): Promise<Response>  =
   try {
     const id: number = parseInt(req.params.id);
 
-    const doctor = await prisma.doctor.delete({
-      where: {
-        id,
-      },
-    });
+    // const doctor = await prisma.doctor.delete({
+    //   where: {
+    //     id,
+    //   },
+    // });
+
+    const doctor= await supabase
+    .from('Doctor')
+    .delete()
+    .eq('id', id)
 
     return success({ res, data: doctor });
   } catch (error) {

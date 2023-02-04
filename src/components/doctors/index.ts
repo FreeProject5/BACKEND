@@ -9,7 +9,7 @@ DoctorRouter.get("/", Controller.findAll);
 DoctorRouter.put("/:id", Controller.modify_datos);
 DoctorRouter.post("/", Controller.create_doctor);
 DoctorRouter.post("/RegistrationHorario", Controller.Registration_horario);
-DoctorRouter.delete("/", Controller.deletee);
+DoctorRouter.delete("/:id", Controller.deletee);
 DoctorRouter.get("/findAll_schedule", Controller.findAll_schedule);
 
 
