@@ -26,13 +26,13 @@ export const modify_datos = async (req: Request, res: Response): Promise<Respons
       //   data: data,
       // });
 
-      const data_doctor = await supabase
+      const data_medico = await supabase
       .from('Doctor')
       .update({ ...data })
       .eq('id', id)
       .select()
 
-      return success({ res, data: data_doctor });
+      return success({ res, data: data_medico });
 
     } catch (error) {
       return failure({ res, message: error });
@@ -45,9 +45,11 @@ export const Registration_horario = async (req: Request, res: Response): Promise
   try {
     const data = req.body;
 
-    const schedule = await prisma.schedule.create({
-      data
-        })
+    // const schedule = await prisma.schedule.create({
+    //   data
+    //     })
+      
+    const schedule = await supabase.from("Schedule").insert(data).select();
 
     return success({ res, data: schedule });
 
@@ -61,9 +63,11 @@ export const create_doctor = async (req: Request, res: Response): Promise<Respon
   try {
     const data = req.body;
 
-    const medico= await prisma.doctor.create({
-      data: data,
-    });
+    // const medico= await prisma.doctor.create({
+    //   data: data,
+    // });
+
+    const medico = await supabase.from("Doctor").insert(data).select();
 
     return success({ res, data: medico });
   } catch (error) {
