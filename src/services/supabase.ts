@@ -5,7 +5,7 @@ import { success, failure } from "../responses";
 
 config();
 
-const supabase = createClient(
+export const supabase = createClient(
   process.env.SUPABASE_PROJECT_URL as string,
   process.env.SUPABASE_API_KEY as string
 );
