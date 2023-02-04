@@ -7,16 +7,16 @@ const responses_1 = require("../responses");
 (0, dotenv_1.config)();
 const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_PROJECT_URL, process.env.SUPABASE_API_KEY);
 const get_patient = async (_req, res) => {
-    const posts = await supabase.from("Patient").select("*");
-    return (0, responses_1.success)({ res, message: "Patient created successfully", data: posts });
+    const posts = await supabase.from("Doctor").select("*");
+    return (0, responses_1.success)({ res, message: "All doctors", data: posts });
 };
 exports.get_patient = get_patient;
 const post_patient = async (req, res) => {
     const { body } = req;
-    const data = await supabase.from("Patient").insert(body).select();
+    const data = await supabase.from("Doctor").insert(body).select();
     return (0, responses_1.success)({
         res,
-        message: "Patient created successfully",
+        message: "Doctor created successfully",
         data: data.data
     });
 };

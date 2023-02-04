@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login_patient = exports.delete_patient = exports.update_patient = exports.get_patient = exports.create_patient = void 0;
+exports.login_patient = exports.delete_patient = exports.update_patient = exports.get_one_patient = exports.get_all_patient = exports.create_patient = void 0;
 const datasource_1 = __importDefault(require("../../datasource"));
 const responses_1 = require("../../responses");
 const strings_1 = require("../../utils/strings");
@@ -25,11 +25,12 @@ const create_patient = async (req, res) => {
         });
     }
     catch (error) {
+        console.log(error);
         return (0, responses_1.failure)({ res, message: error });
     }
 };
 exports.create_patient = create_patient;
-const get_patient = async (_req, res) => {
+const get_all_patient = async (req, res) => {
     try {
         const user = await datasource_1.default.patient.findMany({
             select: {
@@ -46,7 +47,31 @@ const get_patient = async (_req, res) => {
         return (0, responses_1.failure)({ res, message: error });
     }
 };
-exports.get_patient = get_patient;
+exports.get_all_patient = get_all_patient;
+const get_one_patient = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const user = await datasource_1.default.patient.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                email: true,
+                password: true,
+            },
+        });
+        if (id === user?.id) {
+            return (0, responses_1.success)({ res, message: "User found", data: user });
+        }
+        return (0, responses_1.failure)({ res, message: "Unauthorized" });
+    }
+    catch (error) {
+        console.log(error);
+        return (0, responses_1.failure)({ res, message: error });
+    }
+};
+exports.get_one_patient = get_one_patient;
 const update_patient = async (req, res) => {
     try {
         const id = Number(req.params.id);
@@ -61,7 +86,6 @@ const update_patient = async (req, res) => {
         return (0, responses_1.success)({ res, message: "User updated successfully", data: user });
     }
     catch (error) {
-        console.log(error);
         return (0, responses_1.failure)({ res, message: error });
     }
 };
@@ -109,7 +133,6 @@ const login_patient = async (req, res) => {
         }
     }
     catch (error) {
-        console.log(error);
         return (0, responses_1.failure)({ res, message: error });
     }
 };
