@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Request, Response } from "express";
 import { config } from "dotenv";
-import { success, failure } from "../responses";
+import { success} from "../responses";
 
 config();
 
