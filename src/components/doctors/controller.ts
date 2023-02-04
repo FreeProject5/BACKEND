@@ -1,11 +1,12 @@
 import type { Request, Response } from "express";
 import prisma from "../../datasource";
 import { success, failure } from "../../responses";
+import {supabase} from "../../services/supabase";
 
 export const findAll = async (req: Request, res: Response): Promise<Response> => {
   try {
-    let Doctors = await prisma.doctor.findMany({include: {schedule: true}} );
 
+    const Doctors = await supabase.from("Doctor").select("*");
     return success({ res, data: Doctors });
 
   } catch (error) {
