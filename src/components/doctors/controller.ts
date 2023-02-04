@@ -109,3 +109,20 @@ export const findAll_schedule = async (req: Request, res: Response): Promise<Res
     return failure({ res, message: error });
   }
 };
+
+
+export const findOne_schedule = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+
+    const id: number = parseInt(req.params.id);
+    const schedule = await supabase.from("Schedule").select("*").eq('id', id);
+
+    return success({ res, message: "Schedule found", data: schedule });
+
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
