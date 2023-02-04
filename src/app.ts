@@ -9,6 +9,4 @@ app.use(express.json());
 
 routes(app);
 
-//app.get("/", (req, res) => res.send("hola mundo"))
-
 export default app
