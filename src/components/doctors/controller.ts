@@ -1,12 +1,13 @@
 import type { Request, Response } from "express";
-import prisma from "../../datasource";
 import { success, failure } from "../../responses";
 import {supabase} from "../../services/supabase";
+import { hash_password, compare_password } from "../../utils/strings";
 
-export const findAll = async (req: Request, res: Response): Promise<Response> => {
+export const findAll_doctor = async (req: Request, res: Response): Promise<Response> => {
   try {
     //let Doctors = await prisma.doctor.findMany({include: {schedule: true}} );
     const Doctors = await supabase.from("Doctor").select("*");
+    
     return success({ res, data: Doctors });
 
   } catch (error) {
@@ -22,6 +23,10 @@ export const findOne_doctor = async (
 
     const id: number = parseInt(req.params.id);
     const doctor = await supabase.from("Doctor").select("*").eq('id', id);
+    console.log(doctor);
+    if(doctor.data=[]){
+      return failure({ res, message: "Doctor not found" });
+    }
 
     return success({ res, message: "Doctor found", data: doctor });
 
@@ -30,7 +35,7 @@ export const findOne_doctor = async (
   }
 };
 
-export const modify_datos = async (req: Request, res: Response): Promise<Response>  => {
+export const modifyDatos_doctor = async (req: Request, res: Response): Promise<Response>  => {
     try {
       const id: number = Number(req.params.id);
       const data = req.body;
@@ -77,6 +82,12 @@ export const create_doctor = async (req: Request, res: Response): Promise<Respon
   try {
     const data = req.body;
 
+    if (!(data.email.includes("@") && data.email.includes(".com")))
+      return failure({ res, message: "Incorrect email" });
+    if (!data.email || !data.password) {
+      return failure({ res, message: "Username and password are required." });
+    }
+    data.password = hash_password(data.password);
     // const medico= await prisma.doctor.create({
     //   data: data,
     // });
@@ -90,7 +101,7 @@ export const create_doctor = async (req: Request, res: Response): Promise<Respon
 };
 
 
-export const deletee = async (req: Request, res: Response): Promise<Response>  => {
+export const delete_doctor = async (req: Request, res: Response): Promise<Response>  => {
   try {
     const id: number = parseInt(req.params.id);
 
@@ -105,7 +116,7 @@ export const deletee = async (req: Request, res: Response): Promise<Response>  =
     .delete()
     .eq('id', id)
 
-    return success({ res, data: doctor });
+    return success({ res, message: "Doctor deleted", data: doctor });
   } catch (error) {
     return failure({ res, message: error });
     }
