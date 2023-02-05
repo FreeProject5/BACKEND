@@ -28,7 +28,7 @@ const Controller = __importStar(require("./controller"));
 const auth_1 = require("../auth/auth");
 const patient_router = (0, express_1.Router)();
 patient_router.post("/", Controller.create_patient);
-patient_router.post("/login", Controller.login_patient);
+// patient_router.post("/login", Controller.login_patient);
 patient_router.get("/", Controller.get_patient);
 patient_router.put("/:id", auth_1.verify_token, Controller.update_patient);
 patient_router.delete("/:id", auth_1.verify_token, Controller.delete_patient);

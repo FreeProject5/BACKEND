@@ -1,9 +1,10 @@
 import { Request, response, Response } from "express";
-import prisma from "../../datasource";
+import { supabase } from "../../services/supabase";
 import { success, failure } from "../../responses";
 import { hash_password, compare_password } from "../../utils/strings";
-import { generate_token, verify_token } from "../auth/auth";
+import { generate_token } from "../auth/auth";
 import { User } from "../interfaces";
+import { PostgrestResponse } from "@supabase/supabase-js";
 
 export const create_patient = async (
   req: Request,
@@ -17,11 +18,11 @@ export const create_patient = async (
       return failure({ res, message: "Username and password are required." });
     }
     body.password = hash_password(body.password);
-    const user = await prisma.patient.create({ data: body });
+    const { data } = await supabase.from("Patient").insert(body).select();
     return success({
       res,
       message: "User create successfully",
-      data: user,
+      data,
     });
   } catch (error) {
     console.log(error);
@@ -30,47 +31,36 @@ export const create_patient = async (
 };
 
 export const get_all_patient = async (
-  req: Request,
+  _req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const user = await prisma.patient.findMany({
-      select: {
-        id: true,
-        firstname: true,
-        lastname: true,
-        email: true,
-        password: true,
-      },
-    });
-    return success({ res, data: user });
+    const { data } = await supabase
+      .from("Patient")
+      .select("id, firstname, lastname, phone, age, email, password");
+    return success({ res, data });
   } catch (error) {
     return failure({ res, message: error });
   }
 };
+
 export const get_one_patient = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
     const id = Number(req.params.id);
-    const user = await prisma.patient.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        firstname: true,
-        lastname: true,
-        email: true,
-        password: true,
-      },
-    });
-    if (id === user?.id) {
-      return success({ res, message: "User found", data: user });
+    const data = await supabase
+      .from("Patient")
+      .select("id, firstname, lastname, phone, age, email, password")
+      .match({ id: id });
+    console.log(data);
+    if (data.data?.length === 0) {
+      return failure({ res, message: "Patient not exist" });
+    } else {
+      return success({ res, data: data.data });
     }
-    return failure({ res, message: "Unauthorized" });
   } catch (error) {
-    console.log(error);
-
     return failure({ res, message: error });
   }
 };
@@ -85,11 +75,14 @@ export const update_patient = async (
     if (body.password) {
       body.password = hash_password(body.password);
     }
-    const user = await prisma.patient.update({
-      where: { id },
-      data: body,
-    });
-    return success({ res, message: "User updated successfully", data: user });
+    const datetime = new Date().toISOString();
+    body.update_at = datetime;
+    const { data } = await supabase
+      .from("Patient")
+      .update({ ...body })
+      .match({ id })
+      .select();
+    return success({ res, message: "User updated successfully", data });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -101,7 +94,7 @@ export const delete_patient = async (
 ): Promise<Response> => {
   try {
     const id = Number(req.params.id);
-    const user = await prisma.patient.delete({ where: { id } });
+    const { data } = await supabase.from("Patient").delete().match({ id });
     return success({ res, message: "User deleted succesfully" });
   } catch (error) {
     return failure({ res, message: error });
@@ -114,31 +107,26 @@ export const login_patient = async (
 ): Promise<Response> => {
   try {
     const { email, password } = req.body;
-    const user: User | null = await prisma.patient.findUnique({
-      where: { email },
-      select: {
-        id: true,
-        firstname: true,
-        lastname: true,
-        email: true,
-        password: true,
-      },
-    });
-    if (!compare_password(user?.password as string, password)) {
-      return failure({ res, message: "Data does not exist or is incorrect" });
-    } else {
+    const data: PostgrestResponse<User> = await supabase
+      .from("Patient")
+      .select("id, firstname, lastname, phone, age, email, password")
+      .match({ email });
+    if (data.data) {
+      compare_password(data.data[0].password, password);
       const datetime = new Date().toISOString();
-      const last_session = await prisma.patient.update({
-        where: { email },
-        data: { last_session: datetime },
-      });
-      const token: string = generate_token(Number(user?.id));
+      const last_session = await supabase
+        .from("Patient")
+        .update({ last_session: datetime })
+        .match({ email });
+      const token: string = generate_token(Number(data.data[0].id));
       return success({
         res,
         message: `Welcome!`,
-        data: user,
+        data: data.data,
         token,
       });
+    } else {
+      return failure({ res, message: "Data does not exist or is incorrect" });
     }
   } catch (error) {
     return failure({ res, message: error });
