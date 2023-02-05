@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_patient = exports.update_patient = exports.get_patient = exports.create_patient = void 0;
+exports.login_patient = exports.delete_patient = exports.update_patient = exports.get_one_patient = exports.get_all_patient = exports.create_patient = void 0;
 const supabase_1 = require("../../services/supabase");
 const responses_1 = require("../../responses");
 const strings_1 = require("../../utils/strings");
-const patient = supabase_1.supabase.from("Patient");
+const auth_1 = require("../auth/auth");
 const create_patient = async (req, res) => {
     try {
         const { body } = req;
@@ -14,7 +14,7 @@ const create_patient = async (req, res) => {
             return (0, responses_1.failure)({ res, message: "Username and password are required." });
         }
         body.password = (0, strings_1.hash_password)(body.password);
-        const { data } = await patient.insert(body).select();
+        const { data } = await supabase_1.supabase.from("Patient").insert(body).select();
         return (0, responses_1.success)({
             res,
             message: "User create successfully",
@@ -22,20 +22,43 @@ const create_patient = async (req, res) => {
         });
     }
     catch (error) {
+        console.log(error);
         return (0, responses_1.failure)({ res, message: error });
     }
 };
 exports.create_patient = create_patient;
-const get_patient = async (_req, res) => {
+const get_all_patient = async (_req, res) => {
     try {
-        const { data } = await patient.select("id, firstname, lastname, phone, age, email, password");
+        const { data } = await supabase_1.supabase
+            .from("Patient")
+            .select("id, firstname, lastname, phone, age, email, password");
         return (0, responses_1.success)({ res, data });
     }
     catch (error) {
         return (0, responses_1.failure)({ res, message: error });
     }
 };
-exports.get_patient = get_patient;
+exports.get_all_patient = get_all_patient;
+const get_one_patient = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const data = await supabase_1.supabase
+            .from("Patient")
+            .select("id, firstname, lastname, phone, age, email, password")
+            .match({ id: id });
+        console.log(data);
+        if (data.data?.length === 0) {
+            return (0, responses_1.failure)({ res, message: "Patient not exist" });
+        }
+        else {
+            return (0, responses_1.success)({ res, data: data.data });
+        }
+    }
+    catch (error) {
+        return (0, responses_1.failure)({ res, message: error });
+    }
+};
+exports.get_one_patient = get_one_patient;
 const update_patient = async (req, res) => {
     try {
         const id = Number(req.params.id);
@@ -43,11 +66,16 @@ const update_patient = async (req, res) => {
         if (body.password) {
             body.password = (0, strings_1.hash_password)(body.password);
         }
-        const { data } = await patient.update({ data: body }).match({ id });
+        const datetime = new Date().toISOString();
+        body.update_at = datetime;
+        const { data } = await supabase_1.supabase
+            .from("Patient")
+            .update({ ...body })
+            .match({ id })
+            .select();
         return (0, responses_1.success)({ res, message: "User updated successfully", data });
     }
     catch (error) {
-        console.log(error);
         return (0, responses_1.failure)({ res, message: error });
     }
 };
@@ -55,7 +83,7 @@ exports.update_patient = update_patient;
 const delete_patient = async (req, res) => {
     try {
         const id = Number(req.params.id);
-        const { data } = await patient.delete().match({ id });
+        const { data } = await supabase_1.supabase.from("Patient").delete().match({ id });
         return (0, responses_1.success)({ res, message: "User deleted succesfully" });
     }
     catch (error) {
@@ -63,34 +91,34 @@ const delete_patient = async (req, res) => {
     }
 };
 exports.delete_patient = delete_patient;
-// export const login_patient = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     const { email, password } = req.body;
-//     const { data }: PostgrestResponse<User>  = await patient
-//       .select("id, firstname, lastname, phone, age, email, password")
-//       .match({ email });
-//     const {user} = data.data: PostgrestResponse<User>;
-//     if (!compare_password(user, password)) {
-//       return failure({ res, message: "Data does not exist or is incorrect" });
-//     } else {
-//       const datetime = new Date().toISOString();
-//       const last_session = await patient.update({
-//         where: { email },
-//         data: { last_session: datetime },
-//       });
-//       const token: string = generate_token(Number(user?.id));
-//       return success({
-//         res,
-//         message: `Welcome!`,
-//         data: user,
-//         token,
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     return failure({ res, message: error });
-//   }
-// };
+const login_patient = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const data = await supabase_1.supabase
+            .from("Patient")
+            .select("id, firstname, lastname, phone, age, email, password")
+            .match({ email });
+        if (data.data) {
+            (0, strings_1.compare_password)(data.data[0].password, password);
+            const datetime = new Date().toISOString();
+            const last_session = await supabase_1.supabase
+                .from("Patient")
+                .update({ last_session: datetime })
+                .match({ email });
+            const token = (0, auth_1.generate_token)(Number(data.data[0].id));
+            return (0, responses_1.success)({
+                res,
+                message: `Welcome!`,
+                data: data.data,
+                token,
+            });
+        }
+        else {
+            return (0, responses_1.failure)({ res, message: "Data does not exist or is incorrect" });
+        }
+    }
+    catch (error) {
+        return (0, responses_1.failure)({ res, message: error });
+    }
+};
+exports.login_patient = login_patient;
