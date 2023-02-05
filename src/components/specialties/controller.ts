@@ -59,44 +59,37 @@ export const delete_specialties = async (req: Request, res: Response) => {
 };
 
 export const update_specialty = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const specialty = req.body;
-    const updateSpecialty = await supabase
-      .from("Specialties")
-      .update({ ...specialty })
-      .eq("id", id)
-      .select();
-    return success({
-      res,
-      message: "Specialty updated succesfully",
-      data: updateSpecialty.data,
-    });
-  } catch (error) {
-    return failure({
-      res,
-      message: error,
-    });
-  }
+    try {
+        const { id } = req.params;
+        const specialty = req.body;
+        const updateSpecialty = await supabase.from("Specialties").update({...specialty}).eq("id", id).select();
+        return success({
+            res,
+            message: "Specialty updated succesfully",
+            data: updateSpecialty.data
+        });
+    } catch (error) {
+        return failure({
+            res,
+            message: error,
+        });
+    }
 };
 
 export const getDoctorsBySpecialty = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const doctorsbyspe = await supabase
-      .from("Doctor")
-      .select("firstname, lastname")
-      .in("specialty", [id]);
-    return success({
-      res,
-      message: "Doctors by specialty",
-      data: doctorsbyspe.data,
-    });
-  } catch (error) {
-    console.log(error);
-    return failure({
-      res,
-      message: error,
-    });
-  }
+    try {
+        const { id } = req.params;
+        const doctorsbyspeciality = await supabase.from("Doctor").select("firstname, lastname").in("specialty",[id]);  
+        return success({
+            res,
+            message: "Doctors by specialty",
+            data: doctorsbyspeciality.data
+        });
+    } catch (error) {
+        console.log(error)
+        return failure({
+            res,
+            message: error,
+        });
+    }
 };
