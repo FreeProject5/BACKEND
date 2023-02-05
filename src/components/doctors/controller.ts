@@ -2,6 +2,9 @@ import type { Request, Response } from "express";
 import { success, failure } from "../../responses";
 import {supabase} from "../../services/supabase";
 import { hash_password, compare_password } from "../../utils/strings";
+import { PostgrestResponse } from "@supabase/supabase-js";
+import { User_doctor } from "../interfaces";
+import { generate_token } from "../auth/auth";
 
 export const findAll_doctor = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -87,18 +90,21 @@ export const create_doctor = async (req: Request, res: Response): Promise<Respon
     if (!data.email || !data.password) {
       return failure({ res, message: "Username and password are required." });
     }
+    
     data.password = hash_password(data.password);
     // const medico= await prisma.doctor.create({
     //   data: data,
     // });
-
-    const medico = await supabase.from("Doctor").insert(data).select();
+    console.log("llegó");
+    const medico = await supabase.from("Doctor").insert( data ).select();
 
     return success({ res, data: medico });
   } catch (error) {
     return failure({ res, message: error });
     }
 };
+
+
 
 
 export const delete_doctor = async (req: Request, res: Response): Promise<Response>  => {
@@ -151,6 +157,38 @@ export const findOne_schedule = async (
 
     return success({ res, message: "Schedule found", data: schedule });
 
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
+
+
+export const login_Doctor = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { email, password } = req.body;
+    const data: PostgrestResponse<User_doctor> = await supabase
+      .from("Doctor")
+      .select("id, firstname, lastname, license, email, password")
+      .match({ email });
+    if (data.data) {
+      compare_password(data.data[0].password, password);
+      const datetime = new Date().toISOString();
+      const last_session = await supabase
+        .from("Doctor")
+        .update({ last_session: datetime })
+        .match({ email });
+      const token: string = generate_token(Number(data.data[0].id));
+      return success({
+        res,
+        message: `Welcome!`,
+        data: data.data,
+        token,
+      });
+    }
+    return failure({ res, message: "Data does not exist or is incorrect" });
   } catch (error) {
     return failure({ res, message: error });
   }
