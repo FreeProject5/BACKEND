@@ -8,8 +8,3 @@ app.use(cors());
 app.use(express.json());
 
 routes(app);
-
-app.get("/get", get_patient);
-app.post("/post", post_patient);
-
-export default app;
