@@ -24,7 +24,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ROUTES = __importStar(require("../components"));
-const _routes = [["patient", ROUTES.Patient_Router], ["doctor", ROUTES.DoctorRouter]];
+const _routes = [
+    ["patient", ROUTES.Patient_Router],
+    ["doctor", ROUTES.DoctorRouter],
+    ["checkup", ROUTES.CheckupRouter],
+    ["specialties", ROUTES.SpecialtiesRouter]
+];
 const routes = (app) => {
     _routes.forEach(([path, controller]) => {
         app.use(`/api/v1/${path}`, controller);
