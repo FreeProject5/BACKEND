@@ -67,7 +67,6 @@ export const update_specialty = async (req: Request, res: Response) => {
         return failure({
             res,
             message: error,
-            
         });
     }
 };
@@ -75,11 +74,11 @@ export const update_specialty = async (req: Request, res: Response) => {
 export const getDoctorsBySpecialty = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const doctorsbyspe = await supabase.from("Doctor").select("firstname, lastname").in("specialty",[id]);  
+        const doctorsbyspeciality = await supabase.from("Doctor").select("firstname, lastname").in("specialty",[id]);  
         return success({
             res,
             message: "Doctors by specialty",
-            data: doctorsbyspe.data
+            data: doctorsbyspeciality.data
         });
     } catch (error) {
         console.log(error)
