@@ -145,6 +145,10 @@ export const findOne_schedule = async (
     const id: number = parseInt(req.params.id);
     const schedule = await supabase.from("Schedule").select("*").eq('id', id);
 
+    if (schedule && schedule.data && schedule.data.length === 0){
+      return failure({ res, message: "Schedule not found" });
+    }
+
     return success({ res, message: "Schedule found", data: schedule });
 
   } catch (error) {
