@@ -3,7 +3,13 @@ import cors from "cors";
 import routes from "./router";
 const app: Application = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    methods: "GET,PUT,POST,DELETE",
+  })
+);
+
 app.use(express.json());
 
 routes(app);
