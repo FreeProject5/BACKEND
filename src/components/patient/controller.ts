@@ -25,6 +25,7 @@ export const create_patient = async (
       data,
     });
   } catch (error) {
+    console.log(error);
     return failure({ res, message: error });
   }
 };
