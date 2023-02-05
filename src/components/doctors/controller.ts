@@ -23,8 +23,8 @@ export const findOne_doctor = async (
 
     const id: number = parseInt(req.params.id);
     const doctor = await supabase.from("Doctor").select("*").eq('id', id);
-    console.log(doctor);
-    if(doctor.data=[]){
+
+    if (doctor && doctor.data && doctor.data.length === 0){
       return failure({ res, message: "Doctor not found" });
     }
 
