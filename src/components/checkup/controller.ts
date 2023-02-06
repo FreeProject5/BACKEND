@@ -112,6 +112,21 @@ export const getCheckup_byDoctor = async (req: Request, res: Response) => {
     }
 };
 
+export const infodoctor = async (req: Request, res: Response) => {
+    try {
+        const getcheckup = await supabase.from("Schedule").select("id_doctor, Doctor(firstname, lastname, specialty, Specialties(name)), date, start_time, end_time");
+        return success({
+            res,
+            message: "Doctorinfo",
+            data: getcheckup.data
+        });
+    } catch (error) {
+        return failure({
+            res,
+            message: error,
+        });
+    }
+};
 
 
 
