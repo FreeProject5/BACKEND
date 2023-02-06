@@ -41,7 +41,7 @@ export const get_checkup = async (req: Request, res: Response) => {
 export const delete_checkup = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const deletecheckup = await supabase.from("Checkup").delete().match({"id": id});
+        const deletecheckup = await supabase.from("Checkup").delete().match({ "id": id });
         return success({
             res,
             message: "Checkup deleted succesfully",
@@ -51,7 +51,7 @@ export const delete_checkup = async (req: Request, res: Response) => {
         return failure({
             res,
             message: error,
-            
+
         });
     }
 };
@@ -60,7 +60,7 @@ export const update_checkup = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const checkup = req.body;
-        const updatecheckup = await supabase.from("Checkup").update({...checkup}).eq("id", id).select();
+        const updatecheckup = await supabase.from("Checkup").update({ ...checkup }).eq("id", id).select();
         return success({
             res,
             message: "Checkup updated succesfully",
@@ -79,20 +79,39 @@ export const getCheckup_byPatient = async (req: Request, res: Response) => {
         const { id } = req.params;
         const getcheckupbypatient = await supabase.from("Checkup").select(
             "id_patient, Patient(firstname, lastname), id_specialtie, Specialties(name),id_doctor,Doctor(firstname, lastname), checkup_date, checkup_time"
-            ).in("id_patient",[id]);  
+        ).in("id_patient", [id]);
         return success({
             res,
             message: "Checkup by Patient",
             data: getcheckupbypatient.data
         });
     } catch (error) {
-        console.log(error)
         return failure({
             res,
             message: error,
         });
     }
 };
+
+export const getCheckup_byDoctor = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const getcheckupbydoctor = await supabase.from("Checkup").select(
+            "id_patient, Patient(firstname, lastname), id_specialtie, Specialties(name),id_doctor,Doctor(firstname, lastname), checkup_date, checkup_time"
+        ).in("id_doctor", [id]);
+        return success({
+            res,
+            message: "Checkup by Doctor",
+            data: getcheckupbydoctor.data
+        });
+    } catch (error) {
+        return failure({
+            res,
+            message: error,
+        });
+    }
+};
+
 
 
 
