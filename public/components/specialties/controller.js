@@ -66,15 +66,11 @@ const update_specialty = async (req, res) => {
     try {
         const { id } = req.params;
         const specialty = req.body;
-        const updateSpecialty = await supabase_1.supabase
-            .from("Specialties")
-            .update({ ...specialty })
-            .eq("id", id)
-            .select();
+        const updateSpecialty = await supabase_1.supabase.from("Specialties").update({ ...specialty }).eq("id", id).select();
         return (0, responses_1.success)({
             res,
             message: "Specialty updated succesfully",
-            data: updateSpecialty.data,
+            data: updateSpecialty.data
         });
     }
     catch (error) {
@@ -88,14 +84,11 @@ exports.update_specialty = update_specialty;
 const getDoctorsBySpecialty = async (req, res) => {
     try {
         const { id } = req.params;
-        const doctorsbyspe = await supabase_1.supabase
-            .from("Doctor")
-            .select("firstname, lastname")
-            .in("specialty", [id]);
+        const doctorsbyspeciality = await supabase_1.supabase.from("Doctor").select("firstname, lastname").in("specialty", [id]);
         return (0, responses_1.success)({
             res,
             message: "Doctors by specialty",
-            data: doctorsbyspe.data,
+            data: doctorsbyspeciality.data
         });
     }
     catch (error) {

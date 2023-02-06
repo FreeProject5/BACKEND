@@ -32,6 +32,9 @@ const get_all_patient = async (_req, res) => {
         const { data } = await supabase_1.supabase
             .from("Patient")
             .select("id, firstname, lastname, phone, age, email, password");
+        if (data?.length === 0) {
+            return (0, responses_1.failure)({ res, message: "Patients do not exist" });
+        }
         return (0, responses_1.success)({ res, data });
     }
     catch (error) {
@@ -44,15 +47,12 @@ const get_one_patient = async (req, res) => {
         const id = Number(req.params.id);
         const data = await supabase_1.supabase
             .from("Patient")
-            .select("id, firstname, lastname, phone, age, email, password")
-            .match({ id: id });
-        console.log(data);
+            .select("id, firstname, lastname, phone, age, email, password, checkup")
+            .match({ id });
         if (data.data?.length === 0) {
-            return (0, responses_1.failure)({ res, message: "Patient not exist" });
+            return (0, responses_1.failure)({ res, message: "Patient do not exist" });
         }
-        else {
-            return (0, responses_1.success)({ res, data: data.data });
-        }
+        return (0, responses_1.success)({ res, data: data.data });
     }
     catch (error) {
         return (0, responses_1.failure)({ res, message: error });
@@ -73,6 +73,9 @@ const update_patient = async (req, res) => {
             .update({ ...body })
             .match({ id })
             .select();
+        if (data?.length === 0) {
+            return (0, responses_1.failure)({ res, message: "Patient not exist" });
+        }
         return (0, responses_1.success)({ res, message: "User updated successfully", data });
     }
     catch (error) {
@@ -113,9 +116,7 @@ const login_patient = async (req, res) => {
                 token,
             });
         }
-        else {
-            return (0, responses_1.failure)({ res, message: "Data does not exist or is incorrect" });
-        }
+        return (0, responses_1.failure)({ res, message: "Data does not exist or is incorrect" });
     }
     catch (error) {
         return (0, responses_1.failure)({ res, message: error });
