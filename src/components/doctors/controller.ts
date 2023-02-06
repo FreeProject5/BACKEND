@@ -122,6 +122,11 @@ export const delete_doctor = async (req: Request, res: Response): Promise<Respon
     .delete()
     .eq('id', id)
 
+
+    // if (doctor.status=204){
+    //    return failure({ res, message: "Doctor to delete not found" });
+    //  }
+
     return success({ res, message: "Doctor deleted", data: doctor });
   } catch (error) {
     return failure({ res, message: error });
