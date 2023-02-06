@@ -137,14 +137,9 @@ const login_Doctor = async (req, res) => {
         const { email, password } = req.body;
         const data = await supabase_1.supabase
             .from("Doctor")
-<<<<<<< HEAD
             .select("id, firstname, lastname, specialty, email, password")
             .match({ email });
         console.log(data);
-=======
-            .select("id, firstname, lastname, license, email, password")
-            .match({ email });
->>>>>>> 72d61c28fb76ec577db41c0fae0c1f12c6e856a3
         if (data.data) {
             (0, strings_1.compare_password)(data.data[0].password, password);
             const datetime = new Date().toISOString();
