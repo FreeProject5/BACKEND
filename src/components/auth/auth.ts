@@ -21,7 +21,7 @@ export const verify_token = (req: Request, res: Response, next: NextFunction) =>
     }
     const token = authorization.replace("Bearer ", "");
     jwt.verify(token, JWT_SECRET as string, (err: any, decoded: any) => {
-      if (err) return res.status(401).send("Invalid token.");
+        if (err) return failure({ res, message: "Invalid token" });
         req.headers.token = decoded;
       next();
     });
