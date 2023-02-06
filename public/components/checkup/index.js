@@ -31,4 +31,8 @@ CheckupRouter.get("/", Controller.get_checkup);
 CheckupRouter.delete("/:id", Controller.delete_checkup);
 CheckupRouter.put("/update/:id", Controller.update_checkup);
 CheckupRouter.get("/bypatient/:id", Controller.getCheckup_byPatient);
+<<<<<<< HEAD
+=======
+CheckupRouter.get("/bydoctor/:id", Controller.getCheckup_byDoctor);
+>>>>>>> 72d61c28fb76ec577db41c0fae0c1f12c6e856a3
 exports.default = CheckupRouter;
