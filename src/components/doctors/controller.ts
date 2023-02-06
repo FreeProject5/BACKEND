@@ -176,8 +176,9 @@ export const login_Doctor = async (
     const { email, password } = req.body;
     const data: PostgrestResponse<User_doctor> = await supabase
       .from("Doctor")
-      .select("id, firstname, lastname, license, email, password")
+      .select("id, firstname, lastname, specialty, email, password")
       .match({ email });
+    console.log(data);
     if (data.data) {
       compare_password(data.data[0].password, password);
       const datetime = new Date().toISOString();
