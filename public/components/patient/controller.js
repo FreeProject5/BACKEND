@@ -47,7 +47,11 @@ const get_one_patient = async (req, res) => {
         const id = Number(req.params.id);
         const data = await supabase_1.supabase
             .from("Patient")
+<<<<<<< HEAD
+            .select("id, firstname, lastname, phone, age, email, password, checkup")
+=======
             .select("id, firstname, lastname, phone, age, email, password")
+>>>>>>> 72d61c28fb76ec577db41c0fae0c1f12c6e856a3
             .match({ id });
         if (data.data?.length === 0) {
             return (0, responses_1.failure)({ res, message: "Patient do not exist" });
