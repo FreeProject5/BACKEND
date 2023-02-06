@@ -1,10 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
-exports.getCheckup_byPatient = exports.update_checkup = exports.delete_checkup = exports.get_checkup = exports.add_checkup = void 0;
-=======
 exports.getCheckup_byDoctor = exports.getCheckup_byPatient = exports.update_checkup = exports.delete_checkup = exports.get_checkup = exports.add_checkup = void 0;
->>>>>>> 72d61c28fb76ec577db41c0fae0c1f12c6e856a3
 const supabase_1 = require("../../services/supabase");
 const responses_1 = require("../../responses");
 const add_checkup = async (req, res) => {
@@ -91,10 +87,6 @@ const getCheckup_byPatient = async (req, res) => {
         });
     }
     catch (error) {
-<<<<<<< HEAD
-        console.log(error);
-=======
->>>>>>> 72d61c28fb76ec577db41c0fae0c1f12c6e856a3
         return (0, responses_1.failure)({
             res,
             message: error,
@@ -102,8 +94,6 @@ const getCheckup_byPatient = async (req, res) => {
     }
 };
 exports.getCheckup_byPatient = getCheckup_byPatient;
-<<<<<<< HEAD
-=======
 const getCheckup_byDoctor = async (req, res) => {
     try {
         const { id } = req.params;
@@ -122,4 +112,3 @@ const getCheckup_byDoctor = async (req, res) => {
     }
 };
 exports.getCheckup_byDoctor = getCheckup_byDoctor;
->>>>>>> 72d61c28fb76ec577db41c0fae0c1f12c6e856a3
