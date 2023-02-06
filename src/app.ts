@@ -5,7 +5,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: true,
+    origin: "*",
     methods: "GET,PUT,POST,DELETE",
   })
 );
