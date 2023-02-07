@@ -130,6 +130,8 @@ Se ha implementado [Supabase](https://app.supabase.com/sign-in) como base de dat
     "id_specialtie": 2,
     "id_doctor": 4,
     "id_schedule": 3,
+    "checkup_date": "aaaa-mm-dd",
+    "checkup_time": "hh:mm:ss"
   }
   ```
 
