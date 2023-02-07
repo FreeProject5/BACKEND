@@ -36,6 +36,8 @@ Se ha implementado [Supabase](https://app.supabase.com/sign-in) como base de dat
   SUPABASE_PROJECT_URL = "https://link-de-ejemplo.supabase.co";
   SUPABASE_API_KEY = "mykeysupabaseproject";
   SECRET_KEY = "mysecretkey";
+  ACCOUNT_SID = "twilioaccountsid";
+  AUTH_TOKEN= "twilioauthtoken";
   ```
 
   Se recomienda encriptar el valor de `SECRET_KEY` con la función **crypto** de Node.
