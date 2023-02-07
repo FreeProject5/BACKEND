@@ -6,12 +6,17 @@ import { success, failure } from "../../responses";
 export const add_checkup = async (req: Request, res: Response) => {
     try {
         const data = req.body;
+        if (!data || Object.keys(data).length === 0) {
+            return failure({
+                res,
+                message: "No data was provided",
+            });
+        }
         const addcheckup = await supabase.from("Checkup").insert(data).select();
         return success({
             res,
             message: "Checkup added succesfully",
             data: addcheckup.data
-
         });
     } catch (error) {
         console.log(error)
