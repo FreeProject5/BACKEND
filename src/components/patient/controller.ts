@@ -38,6 +38,9 @@ export const get_all_patient = async (
     const { data } = await supabase
       .from("Patient")
       .select("id, firstname, lastname, phone, age, email, password");
+    if (data?.length === 0) {
+      return failure({ res, message: "Patients do not exist" });
+    }
     return success({ res, data });
   } catch (error) {
     return failure({ res, message: error });
@@ -53,13 +56,11 @@ export const get_one_patient = async (
     const data = await supabase
       .from("Patient")
       .select("id, firstname, lastname, phone, age, email, password")
-      .match({ id: id });
-    console.log(data);
+      .match({ id });
     if (data.data?.length === 0) {
-      return failure({ res, message: "Patient not exist" });
-    } else {
-      return success({ res, data: data.data });
+      return failure({ res, message: "Patient do not exist" });
     }
+    return success({ res, data: data.data });
   } catch (error) {
     return failure({ res, message: error });
   }
@@ -82,6 +83,9 @@ export const update_patient = async (
       .update({ ...body })
       .match({ id })
       .select();
+    if (data?.length === 0) {
+      return failure({ res, message: "Patient not exist" });
+    }
     return success({ res, message: "User updated successfully", data });
   } catch (error) {
     return failure({ res, message: error });
@@ -125,9 +129,8 @@ export const login_patient = async (
         data: data.data,
         token,
       });
-    } else {
-      return failure({ res, message: "Data does not exist or is incorrect" });
     }
+    return failure({ res, message: "Data does not exist or is incorrect" });
   } catch (error) {
     return failure({ res, message: error });
   }
