@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { supabase } from "../../services/supabase";
 import { success, failure } from "../../responses";
 import { hash_password, compare_password } from "../../utils/strings";

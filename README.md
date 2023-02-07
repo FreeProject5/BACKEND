@@ -1,11 +1,11 @@
 # Administración de citas médicas
 
-Esta aplicación web para administrar citas médicas online consta de 2 partes:
+Se ha realizado una aplicación web para administrar citas médicas online la cual consta de 2 partes:
 
 - Backend -> [REST API citas médicas](https://citas-medicas-nu.vercel.app/api/v1/)
 - Frontend -> [App citas médicas](https://app-citas-medicas.vercel.app/)
 
-Este repositorio contiene el código backend del proyecto con el cual puedes realizar tareas como gestionar datos, autenticación, y procesamiento de solicitudes de:
+Este repositorio contiene el código backend del proyecto con el que se puede realizar múltiples tareas como gestionar datos, autenticación, y procesamiento de solicitudes de:
 
 1. Pacientes. 🙋🏻‍♂️🙋🏻‍♀️
 2. Doctores. 🧑🏻‍⚕️
