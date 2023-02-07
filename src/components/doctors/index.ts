@@ -8,7 +8,7 @@ const DoctorRouter: Router = Router();
 //DoctorRouter.get("/doctor/:id", Controller.findOne);
 DoctorRouter.get("/", Controller.findAll_doctor);
 DoctorRouter.get("/:id", Controller.findOne_doctor);
-DoctorRouter.put("/:id", verify_token, Controller.modifyDatos_doctor);
+DoctorRouter.put("/:id", verify_token, Controller.update_patient);
 DoctorRouter.post("/", Controller.create_doctor);
 DoctorRouter.delete("/:id", verify_token,Controller.delete_doctor);
 

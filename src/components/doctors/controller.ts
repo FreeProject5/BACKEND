@@ -38,28 +38,31 @@ export const findOne_doctor = async (
   }
 };
 
-export const modifyDatos_doctor = async (req: Request, res: Response): Promise<Response>  => {
-    try {
-      const id: number = Number(req.params.id);
-      const data = req.body;
 
-      // const data_medico=await prisma.doctor.update({
-      //   where: { id },
-      //   data: data,
-      // });
-
-      const data_medico = await supabase
-      .from('Doctor')
-      .update({ ...data })
-      .eq('id', id)
-      .select()
-
-      return success({ res, data: data_medico });
-
-    } catch (error) {
-      return failure({ res, message: error });
+export const update_patient = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const id = Number(req.params.id);
+    const { body } = req;
+    if (body.password) {
+      body.password = hash_password(body.password);
     }
-  };
+
+    const { data } = await supabase
+      .from("Doctor")
+      .update({ ...body })
+      .match({ id })
+      .select();
+    if (data?.length === 0) {
+      return failure({ res, message: "Doctor not exist" });
+    }
+    return success({ res, message: "Doctor updated successfully", data });
+  } catch (error) {
+    return failure({ res, message: error });
+  }
+};
 
 
 export const Registration_horario = async (req: Request, res: Response): Promise<Response> => {
