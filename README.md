@@ -56,6 +56,11 @@ Se ha implementado [Supabase](https://app.supabase.com/sign-in) como base de dat
 
   Esto nos dará una clave la cual usaremos como `SECRET_KEY`
 
+- Ejecutar el proyecto
+    ```bash
+    npm run dev
+    ```
+
 ## Funcionamiento
 
 > _Hay rutas protegidas con middleware que requieren enviar un token de verificacion en el **Headers**, el cual se obtiene al momento de hacer login de un usuario._
