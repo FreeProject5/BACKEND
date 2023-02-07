@@ -5,6 +5,7 @@ import { hash_password, compare_password } from "../../utils/strings";
 import { generate_token } from "../auth/auth";
 import { User } from "../interfaces";
 import { PostgrestResponse } from "@supabase/supabase-js";
+import { send_message } from "../../twilio/twilio";
 
 export const create_patient = async (
   req: Request,
@@ -19,6 +20,7 @@ export const create_patient = async (
     }
     body.password = hash_password(body.password);
     const { data } = await supabase.from("Patient").insert(body).select();
+    send_message(req, res);
     return success({
       res,
       message: "User create successfully",
