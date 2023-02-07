@@ -8,7 +8,7 @@ import { generate_token } from "../auth/auth";
 
 export const findAll_doctor = async (req: Request, res: Response): Promise<Response> => {
   try {
-    //let Doctors = await prisma.doctor.findMany({include: {schedule: true}} );
+    
     const Doctors = await supabase.from("Doctor").select("*");
     
     return success({ res, data: Doctors });
@@ -69,10 +69,6 @@ export const Registration_horario = async (req: Request, res: Response): Promise
 
   try {
     const data = req.body;
-
-    // const schedule = await prisma.schedule.create({
-    //   data
-    //     })
       
     const schedule = await supabase.from("Schedule").insert(data).select();
 
@@ -95,10 +91,7 @@ export const create_doctor = async (req: Request, res: Response): Promise<Respon
     }
     
     data.password = hash_password(data.password);
-    // const medico= await prisma.doctor.create({
-    //   data: data,
-    // });
-    console.log("llegó");
+
     const medico = await supabase.from("Doctor").insert( data ).select();
 
     return success({ res, data: medico });
@@ -114,21 +107,11 @@ export const delete_doctor = async (req: Request, res: Response): Promise<Respon
   try {
     const id: number = parseInt(req.params.id);
 
-    // const doctor = await prisma.doctor.delete({
-    //   where: {
-    //     id,
-    //   },
-    // });
-
     const doctor= await supabase
     .from('Doctor')
     .delete()
     .eq('id', id)
 
-
-    // if (doctor.status=204){
-    //    return failure({ res, message: "Doctor to delete not found" });
-    //  }
 
     return success({ res, message: "Doctor deleted", data: doctor });
   } catch (error) {
@@ -139,7 +122,7 @@ export const delete_doctor = async (req: Request, res: Response): Promise<Respon
 
 export const findAll_schedule = async (req: Request, res: Response): Promise<Response> => {
   try {
-    //let Doctors = await prisma.schedule.findMany();
+  
     const Schedule = await supabase.from("Schedule").select("*");
 
     return success({ res, data: Schedule });
@@ -181,7 +164,7 @@ export const login_Doctor = async (
       .from("Doctor")
       .select("id, firstname, lastname, specialty, email, password")
       .match({ email });
-    console.log(data);
+
     if (data.data) {
       compare_password(data.data[0].password, password);
       const datetime = new Date().toISOString();

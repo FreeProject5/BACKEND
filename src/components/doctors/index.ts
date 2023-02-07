@@ -4,8 +4,6 @@ import { verify_token } from "../auth/auth";
 
 const DoctorRouter: Router = Router();
 
-//DoctorRouter.get("/doctor", Controller.);
-//DoctorRouter.get("/doctor/:id", Controller.findOne);
 DoctorRouter.get("/", Controller.findAll_doctor);
 DoctorRouter.get("/:id", Controller.findOne_doctor);
 DoctorRouter.put("/:id", verify_token, Controller.update_patient);
