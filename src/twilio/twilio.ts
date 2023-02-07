@@ -9,12 +9,12 @@ const authToken = process.env.AUTH_TOKEN;
 
 const client = twilio (accountSid, authToken);
 
-export const send_message = async (req: Request, res: Response) => {
+export const send_message = async (req: Request, res: Response, phone: string) => {
     client.messages
     .create({
         body: 'You have successfully registered',
         from: '+12098526986',
-        to: '+51968035037'
+        to: "+51"+phone,
     })
     .then((message: { sid: any; }) => res.json(message.sid));
 }

@@ -20,7 +20,7 @@ export const create_patient = async (
     }
     body.password = hash_password(body.password);
     const { data } = await supabase.from("Patient").insert(body).select();
-    send_message(req, res);
+    send_message(req, res, body.phone);
     return success({
       res,
       message: "User create successfully",
