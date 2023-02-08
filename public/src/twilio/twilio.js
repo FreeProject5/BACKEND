@@ -12,9 +12,10 @@ const authToken = process.env.AUTH_TOKEN;
 const client = (0, twilio_1.default)(accountSid, authToken);
 const send_message = async (req, res) => {
     const phoneNumber = req.body.phone;
+    const name = req.body.firstname;
     client.messages
         .create({
-        body: 'You have successfully registered',
+        body: `${name} you have successfully registered`,
         from: '+12098526986',
         to: `+51${phoneNumber}`,
     })
