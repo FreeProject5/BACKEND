@@ -4,10 +4,10 @@ import twilio from "twilio";
 
 config();
 
-const accountSid = process.env.ACCOUNT_SID;
+const ACcountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 
-const client = twilio (accountSid, authToken);
+const client = twilio (ACcountSid, authToken);
 
 export const send_message = async (req: Request, res: Response) => {
     const phoneNumber = req.body.phone;
