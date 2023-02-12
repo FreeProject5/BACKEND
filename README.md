@@ -57,7 +57,7 @@ Se ha implementado [Supabase](https://app.supabase.com/sign-in) como base de dat
 
   Esto nos dará una clave la cual usaremos como `SECRET_KEY`
 
-### **Instalación y configuración de JEST**
+#### **Instalación y configuración de JEST**
 
 `npm i jest -D`
 
@@ -79,7 +79,7 @@ Se ha implementado [Supabase](https://app.supabase.com/sign-in) como base de dat
 
 `npx jest --init`
 
-### **Ejecutar el proyecto**
+#### **Ejecutar el proyecto**
 
 ```bash
 npm run dev
