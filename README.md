@@ -202,3 +202,27 @@ Se ha implementado [Supabase](https://app.supabase.com/sign-in) como base de dat
   2. <http://localhost:6005/api/v1/doctor/findAll/Schedule> --> _Obtener todos los horarios médicos (GET)_ ✔️
 
   3. <http://localhost:6005/api/v1/doctor/findAll_schedule/id> --> _Obtener un horario médico por id (GET)_ 🗒️
+
+
+### Instalación y configuración de JEST
+
+`npm i jest -D`
+
+- En package.json scripts poner jest
+
+`npm i --save-dev @types/jest`
+
+#### jest solo me permite usar require, entonces para poder usar import ,usaré este comando:
+
+`npm install --save-dev babel-jest @babel/core @babel/preset-env`
+
+#### Para usar typescript 
+
+`npm install --save-dev @babel/preset-typescript`         
+
+`npm i ts-jest -D`
+
+#### Aqquí se instala el coverage dependiendo de la configuración cuando ejecutemos el siguiente comando. También se configura jest
+
+`npx jest --init`
+
