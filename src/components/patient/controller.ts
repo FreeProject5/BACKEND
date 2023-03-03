@@ -118,19 +118,22 @@ export const login_patient = async (
       .select("id, firstname, lastname, phone, age, email, password")
       .match({ email });
     if (data.data) {
-      compare_password(data.data[0].password, password);
-      const datetime = new Date().toISOString();
-      const last_session = await supabase
-        .from("Patient")
-        .update({ last_session: datetime })
-        .match({ email });
-      const token: string = generate_token(Number(data.data[0].id));
-      return success({
-        res,
-        message: `Welcome!`,
-        data: data.data,
-        token,
-      });
+      if (compare_password(data.data[0].password, password)) {
+        const datetime = new Date().toISOString();
+        const last_session = await supabase
+          .from("Patient")
+          .update({ last_session: datetime })
+          .match({ email });
+        const token: string = generate_token(Number(data.data[0].id));
+        return success({
+          res,
+          message: `Welcome!`,
+          data: data.data,
+          token,
+        });
+      } else {
+        return failure({ res, message: "Password incorrect" });
+      }
     }
     return failure({ res, message: "Data does not exist or is incorrect" });
   } catch (error) {
