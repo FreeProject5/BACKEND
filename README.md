@@ -6,7 +6,7 @@ Se ha realizado una aplicación web para administrar citas médicas online la cu
 - Frontend -> [App citas médicas](https://app-citas-medicas.vercel.app/)  -  [Repositorio](https://github.com/FreeProject5/Project_frontend)
    
 
-Este repositorio contiene el código backend del proyecto con el que se puede realizar múltiples tareas como gestionar datos, autenticación, y procesamiento de solicitudes de:
+Este repositorio contiene el código backend del proyecto con el que se puede realizar múltiples tareas como gestionar datos, autenticación y procesamiento de solicitudes de:
 
 1. Pacientes. 🙋🏻‍♂️🙋🏻‍♀️
 2. Doctores. 🧑🏻‍⚕️
